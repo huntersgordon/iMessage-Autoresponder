@@ -14,11 +14,13 @@ if (iMessageEmail == "" or iMessagePhone == ""):
 def processResponse(message,isItFromMe,sender,conn):
     #########################~~~~PLACE YOUR CUSTOM FUNCTIONS HERE~~~~#########################
     if(message == "exit" and isItFromMe):
+        print("Activating exit function...")
         #sendMessage.messageSend("goodbye...",sender)
         sys.exit()
     ###############################SONG DOWNLOADER############################################
 
     if (str.lower(message[0:4]) == "song"):
+        print("Activating song function...")
             #pid=os.fork()
             #if pid == 0 : #child process
         SongDownloader.songGetter(message,sender)
