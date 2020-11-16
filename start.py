@@ -12,10 +12,7 @@ last = getMostRecentText(conn)
 while(True):
     new = getMostRecentText(conn)
     if(new!=last):
-        try:
-            print("text: " + new)
-            CommandProcess.processResponse(new,isFromMe(conn),getMostRecentSender(conn)[0],conn)
-            last = new
-        except:
-            continue
+        print("text: " + new)
+        CommandProcess.processResponse(new,isFromMe(conn),getMostRecentSender(conn)[0],conn)
+        last = new
     time.sleep(0.5)

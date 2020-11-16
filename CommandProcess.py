@@ -15,15 +15,15 @@ def processResponse(message,isItFromMe,sender,conn):
     #########################~~~~PLACE YOUR CUSTOM FUNCTIONS HERE~~~~#########################
     if(message == "exit" and isItFromMe):
         #sendMessage.messageSend("goodbye...",sender)
-        exit()
+        sys.exit()
     ###############################SONG DOWNLOADER############################################
-    #
-    #if (str.lower(message[0:4]) == "song"):
-    #        pid=os.fork()
-    #        if pid == 0 : #child process
-    #            SongDownloader.songGetter(message,sender)
-    #            os._exit(os.EX_OK)
-    #
+
+    if (str.lower(message[0:4]) == "song"):
+            #pid=os.fork()
+            #if pid == 0 : #child process
+        SongDownloader.songGetter(message,sender)
+            #os._exit(os.EX_OK)
+
     ######################CLEARS THE MESSAGE FEED#####################################################
     if (str.lower(message) == "clear" and isItFromMe):
             os.system("python3 clearChat.py {} {}".format(iMessagePhone,iMessageEmail))

@@ -30,13 +30,11 @@ def songGetter(new,sender):
     while True:
         new = pd.read_sql_query("select text from message ORDER BY ROWID DESC limit 1",conn)['text'][0]
         if (new!=last and getMostRecentSender(conn)[0] == sender): #there is a new message from the sender
-            if (not str.isdigit(new) or (int(new) > 9 or int(new) < 0)): #check for alphanumeric
+            if (not str.isdigit(new) or (int(new) > 9 or int(new) < 0) and new != "𝕡𝕝𝕖𝕒𝕤𝕖 𝕤𝕖𝕝𝕖𝕔𝕥 𝕥𝕙𝕖 𝕟𝕦𝕞𝕓𝕖𝕣 𝕪𝕠𝕦 𝕨𝕚𝕤𝕙 𝕥𝕠 𝕕𝕠𝕨𝕟𝕝𝕠𝕒𝕕"): #check for alphanumeric
                     print("quitting because last message was " + new)
                     inform = 'osascript -e \'tell application "Messages" \n send \"quitting...\" to buddy "{}" of service "E:{}" \n end tell\''.format(sender,iMessageEmail)
                     os.system(inform)
-                    os._exit()
-                    print("hoodtown")
-                    sys.exit()
+                    return
             songIndex = int(new)
             break
         time.sleep(0.5) #or a desired resolution
@@ -51,11 +49,11 @@ def songGetter(new,sender):
     if pid == 0:
         #attempt to donwload the song under this child process
         os.system("youtube-dl --output \"song.%(ext)s\" --quiet --extract-audio --embed-thumbnail --audio-format mp3 \'{}\'".format(songLink))
+        print("downloading that song")
         os.system("osascript sendSong.scpt \"{}\"".format(sender))
         inform = 'osascript -e \'tell application "Messages" \n send \"Process {} complete.\" to buddy "{}" of service "E:{}" \n end tell\''.format(os.getpid(),sender,iMessageEmail)
         os.system(inform)
-        os._exit(os.EX_OK)
-        sys.exit()
+        os.kill(os.getpid(), signal.SIGSTOP)
     else:
         ##parent process
         count = 0
@@ -68,11 +66,12 @@ def songGetter(new,sender):
                 inform = 'osascript -e \'tell application "Messages" \n send \"Download cancelled successfully.\" to buddy "{}" of service "E:{}" \n end tell\''.format(sender,iMessageEmail)
                 os.system(inform)
                 os.kill(pid, signal.SIGSTOP)
-                sys.exit()
+                break
+                #sys.exit()
             if (str(pid) in mostRecent or ("quitting" in mostRecent)):
-                print("ending")
-                os.kill(pid, signal.SIGSTOP)
-                sys.exit()
+                print("done downloading")
+                return
+
 
             time.sleep(0.5)
             count += 0.5
