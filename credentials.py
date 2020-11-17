@@ -1,3 +1,3 @@
-iMessageEmail = "huntersgordon@me.com" #The email you are logged into Messages app with
-iMessagePhone = "+18186215850" #the number you use for Messages app , preceded by a '+'
+iMessageEmail = "" #The email you are logged into Messages app with. ex: johnapple@me.com
+iMessagePhone = "" #the number you use for Messages app , preceded by a '+'. ex: +18184554737
 myChar = "ä" #this character is for you to precede bash commands to your mac
